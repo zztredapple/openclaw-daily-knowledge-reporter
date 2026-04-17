@@ -1,0 +1,25 @@
+# 日志文件
+logs/
+*.log
+
+# 配置（包含敏感信息）
+config/email_config.env
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# IDE
+.vscode/
+.idea/
+
+# macOS
+.DS_Store
+
+# state.json 不提交（用户状态文件）
+# 运行时状态（每个用户不同，不跟踪）
+knowledge_base/state.json
+
+# 但跟踪模板版本
+# !knowledge_base/state.json.template
