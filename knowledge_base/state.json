@@ -1,0 +1,19 @@
+{
+  "version": "1.0",
+  "finance": {
+    "total": 70,
+    "used": [],
+    "last_reset": ""
+  },
+  "ai": {
+    "total": 70,
+    "used": [],
+    "last_reset": ""
+  },
+  "words": {
+    "total": 107,
+    "used": [],
+    "last_reset": ""
+  },
+  "low_threshold": 5
+}
