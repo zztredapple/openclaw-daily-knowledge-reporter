@@ -1,0 +1,566 @@
+{
+  "version": "1.0",
+  "total": 70,
+  "items": [
+    {
+      "id": 1,
+      "title": "Transformer 架构",
+      "en": "Transformer Architecture",
+      "definition": "2017年Google提出的深度学习架构，完全基于注意力机制，摒弃了RNN的序列依赖",
+      "plain": "AI能一眼看完整句，还能自动判断哪些词更重要。",
+      "usage": "GPT、Claude、Gemini等大模型的底层架构、机器翻译、语音识别"
+    },
+    {
+      "id": 2,
+      "title": "RAG 检索增强生成",
+      "en": "Retrieval-Augmented Generation",
+      "definition": "结合信息检索与文本生成的技术，先检索外部知识再生成回答",
+      "plain": "AI考试可以带'小抄'了。先查资料再回答，减少胡说八道。",
+      "usage": "企业知识库问答、法律/医疗专业咨询、Perplexity AI、Kimi联网搜索"
+    },
+    {
+      "id": 3,
+      "title": "注意力机制",
+      "en": "Attention Mechanism",
+      "definition": "让模型在处理序列时能够动态关注不同部分的重要性权重",
+      "plain": "读句子时自动抓重点。'猫坐在垫子上因为它很温暖'，模型知道'它'指垫子。",
+      "usage": "机器翻译、文本摘要、图像描述生成、Transformer核心"
+    },
+    {
+      "id": 4,
+      "title": "大语言模型",
+      "en": "LLM (Large Language Model)",
+      "definition": "参数量巨大（数十亿到数万亿）的神经网络，通过海量文本预训练获得通用语言能力",
+      "plain": "读遍互联网的超级书虫。GPT-4读了相当于几百万本书，所以什么话题都能聊。",
+      "usage": "ChatGPT、Claude、文心一言、通义千问、代码生成"
+    },
+    {
+      "id": 5,
+      "title": "提示工程",
+      "en": "Prompt Engineering",
+      "definition": "设计和优化输入提示词以引导AI生成更好输出的技术",
+      "plain": "跟AI说话的艺术。说'写个故事'不如'写一个200字悬疑故事，主角是侦探'。",
+      "usage": "提高AI输出质量、角色设定、Few-shot学习、Chain-of-Thought"
+    },
+    {
+      "id": 6,
+      "title": "微调",
+      "en": "Fine-tuning",
+      "definition": "在预训练模型基础上，用特定领域数据继续训练以适应特定任务",
+      "plain": "通用大学生变专业医生。先学通识，再拿医学书专门训练，就能看病了。",
+      "usage": "垂直领域模型、企业私有模型、风格定制、性能优化"
+    },
+    {
+      "id": 7,
+      "title": "强化学习",
+      "en": "Reinforcement Learning",
+      "definition": "通过与环境交互、获得奖励或惩罚来学习最优策略的机器学习方法",
+      "plain": "训狗式学习。做对了给零食，做错了不给，慢慢就学会规矩了。",
+      "usage": "AlphaGo、自动驾驶、游戏AI、ChatGPT的RLHF训练"
+    },
+    {
+      "id": 8,
+      "title": "RLHF 人类反馈强化学习",
+      "en": "Reinforcement Learning from Human Feedback",
+      "definition": "让人类评价模型输出并用强化学习优化的技术",
+      "plain": "AI写多个答案，人类打分哪个好，AI就学着往高分方向优化。",
+      "usage": "ChatGPT对齐训练、减少有害输出、提升回答质量"
+    },
+    {
+      "id": 9,
+      "title": "扩散模型",
+      "en": "Diffusion Model",
+      "definition": "通过逐步去噪从随机噪声生成数据的生成模型",
+      "plain": "从雪花电视画面变高清图。先加噪再学怎么去噪，就能从噪声画出任意图片。",
+      "usage": "Midjourney、Stable Diffusion、DALL-E、视频生成"
+    },
+    {
+      "id": 10,
+      "title": "GAN 生成对抗网络",
+      "en": "Generative Adversarial Network",
+      "definition": "Generator和Discriminator两个网络对抗训练，一个造假一个鉴假",
+      "plain": "造假币的和警察互相练。假币越做越真，警察眼光越来越毒，最后假币比真还真。",
+      "usage": "DeepFake、图像生成、风格迁移、数据增强"
+    },
+    {
+      "id": 11,
+      "title": "向量数据库",
+      "en": "Vector Database",
+      "definition": "专门存储和检索高维向量（嵌入）的数据库，支持相似性搜索",
+      "plain": "AI的记忆库。把文字转成数字向量，找意思相近的内容不用关键词匹配。",
+      "usage": "RAG系统、语义搜索、推荐系统、图像检索"
+    },
+    {
+      "id": 12,
+      "title": "嵌入/词向量",
+      "en": "Embedding",
+      "definition": "将离散对象（词、句子、图像）映射到连续向量空间的技术",
+      "plain": "把意思变成坐标。'国王'-'男人'+'女人'≈'女王'，数学上能算语义关系。",
+      "usage": "语义搜索、推荐系统、文本分类、RAG"
+    },
+    {
+      "id": 13,
+      "title": "幻觉",
+      "en": "Hallucination",
+      "definition": "AI生成看似合理但实际错误或虚构的内容",
+      "plain": "AI一本正经胡说八道。编假论文、假案例、假数据，看着还挺像真的。",
+      "usage": "RAG缓解幻觉、事实核查、可信度评估"
+    },
+    {
+      "id": 14,
+      "title": "温度参数",
+      "en": "Temperature",
+      "definition": "控制模型输出随机性的参数，高温更随机创意，低温更确定保守",
+      "plain": "AI的'脑洞'大小。温度0.7正常聊天，0.2严谨回答，1.0创意写作。",
+      "usage": "调整输出风格、创意写作vs事实回答、A/B测试"
+    },
+    {
+      "id": 15,
+      "title": "思维链",
+      "en": "Chain-of-Thought",
+      "definition": "让模型展示推理步骤而非直接给出答案的提示技术",
+      "plain": "让AI'说出思考过程'。数学题不写答案先写步骤，准确率大幅提升。",
+      "usage": "复杂推理、数学问题、逻辑谜题、可解释性"
+    },
+    {
+      "id": 16,
+      "title": "少样本学习",
+      "en": "Few-shot Learning",
+      "definition": "仅通过少量示例就能学会新任务的能力",
+      "plain": "看几个例子就会了。给AI三个翻译例子，它就能按同样风格翻译新句子。",
+      "usage": "快速适配新任务、风格模仿、分类任务"
+    },
+    {
+      "id": 17,
+      "title": "零样本学习",
+      "en": "Zero-shot Learning",
+      "definition": "无需任何示例，仅通过任务描述就能完成新任务",
+      "plain": "看说明就会。告诉AI'把这些话翻译成法语'，不用给例子直接翻。",
+      "usage": "通用模型能力、快速原型、开放域任务"
+    },
+    {
+      "id": 18,
+      "title": "多模态",
+      "en": "Multimodal",
+      "definition": "能同时处理和理解多种类型数据（文本、图像、音频、视频）的AI系统",
+      "plain": "眼耳口并用。看图说话、听音识曲、视频理解，像人一样多感官。",
+      "usage": "GPT-4V、Claude 3、Sora、自动驾驶"
+    },
+    {
+      "id": 19,
+      "title": "AI Agent",
+      "en": "AI Agent",
+      "definition": "能自主感知环境、做出决策并执行行动的AI系统",
+      "plain": "能自己干活的AI。不只是回答问题，能查资料、写代码、发邮件、订机票。",
+      "usage": "AutoGPT、Devin、智能客服、自动化办公"
+    },
+    {
+      "id": 20,
+      "title": "函数调用",
+      "en": "Function Calling",
+      "definition": "让模型能够识别何时需要调用外部工具并生成正确的调用参数",
+      "plain": "AI知道什么时候该用工具。用户问天气，AI自己决定调用天气API。",
+      "usage": "插件系统、API集成、AI Agent、实时数据获取"
+    },
+    {
+      "id": 21,
+      "title": "量化",
+      "en": "Quantization",
+      "definition": "将模型权重从高精度（32位浮点）转换为低精度（8位/4位整数）的技术",
+      "plain": "模型瘦身术。精度降一点，模型小很多，手机也能跑大模型。",
+      "usage": "端侧部署、模型压缩、推理加速、降低显存"
+    },
+    {
+      "id": 22,
+      "title": "蒸馏",
+      "en": "Knowledge Distillation",
+      "definition": "让小模型学习大模型的行为，以较小体积获得接近性能",
+      "plain": "学霸教普通学生。大模型（老师）教小模型（学生），学生成绩接近老师。",
+      "usage": "模型压缩、移动端部署、快速推理"
+    },
+    {
+      "id": 23,
+      "title": "MoE 混合专家模型",
+      "en": "Mixture of Experts",
+      "definition": "由多个专家子网络组成，每次只激活部分专家的模型架构",
+      "plain": "会诊制。每个问题只找相关专家回答，不用全员出动，省算力。",
+      "usage": "GPT-4、Mixtral、大规模模型效率优化"
+    },
+    {
+      "id": 24,
+      "title": "位置编码",
+      "en": "Positional Encoding",
+      "definition": "让Transformer感知序列中元素位置信息的技术",
+      "plain": "告诉AI词的位置。'我爱AI'和'AI爱我'词一样但意思不同，位置编码区分它们。",
+      "usage": "Transformer架构、序列建模、长文本处理"
+    },
+    {
+      "id": 25,
+      "title": "梯度下降",
+      "en": "Gradient Descent",
+      "definition": "通过计算损失函数梯度并沿反方向更新参数来最小化损失的优化算法",
+      "plain": "盲人下山。摸一摸哪边陡就往反方向走一步，直到走到谷底（最优解）。",
+      "usage": "神经网络训练、参数优化、机器学习基础"
+    },
+    {
+      "id": 26,
+      "title": "反向传播",
+      "en": "Backpropagation",
+      "definition": "通过链式法则计算梯度并逐层更新网络权重的算法",
+      "plain": "错题本机制。输出错了，倒推回去看每层哪里出问题，逐层调整。",
+      "usage": "神经网络训练、深度学习基础、参数学习"
+    },
+    {
+      "id": 27,
+      "title": "过拟合",
+      "en": "Overfitting",
+      "definition": "模型在训练数据上表现太好但泛化能力差的现象",
+      "plain": "死记硬背。把练习题答案全背下来，考试换道题就不会了。",
+      "usage": "正则化、Dropout、早停、数据增强"
+    },
+    {
+      "id": 28,
+      "title": "正则化",
+      "en": "Regularization",
+      "definition": "防止过拟合的技术，通过惩罚复杂模型来鼓励简单解",
+      "plain": "防止钻牛角尖。模型太复杂就扣分，逼着它找更通用的规律。",
+      "usage": "L1/L2正则、Dropout、早停、模型简化"
+    },
+    {
+      "id": 29,
+      "title": "迁移学习",
+      "en": "Transfer Learning",
+      "definition": "将在一个任务上学到的知识应用到不同但相关任务上的技术",
+      "plain": "举一反三。学会识别猫，再学识别狗就快了，都是识别动物。",
+      "usage": "预训练模型、小样本学习、跨领域应用"
+    },
+    {
+      "id": 30,
+      "title": "BERT",
+      "en": "Bidirectional Encoder Representations from Transformers",
+      "definition": "双向Transformer编码器，同时利用上下文理解词义",
+      "plain": "阅读理解专家。同时看前后文理解词义，填空题比GPT还强。",
+      "usage": "搜索排序、文本分类、命名实体识别、语义理解"
+    },
+    {
+      "id": 31,
+      "title": "LoRA 低秩自适应",
+      "en": "Low-Rank Adaptation",
+      "definition": "只训练少量参数就能微调大模型的技术，大幅降低显存和算力需求",
+      "plain": "模型微调的省力技巧。只改模型的一小部分参数，效果接近全量微调，成本降100倍。",
+      "usage": "Stable Diffusion微调、大模型个性化、低成本定制模型"
+    },
+    {
+      "id": 32,
+      "title": "DPO 直接偏好优化",
+      "en": "Direct Preference Optimization",
+      "definition": "直接用人类偏好数据优化模型，无需训练奖励模型的RLHF替代方案",
+      "plain": "RLHF的简化版。不用先训练奖励模型，直接用'人类更喜欢哪个答案'的数据来训练。",
+      "usage": "模型对齐、减少训练步骤、Claude训练、Llama 2训练"
+    },
+    {
+      "id": 33,
+      "title": "宪法AI",
+      "en": "Constitutional AI",
+      "definition": "用一套规则（宪法）指导AI自我改进对齐的方法，减少人类标注需求",
+      "plain": "给AI一本行为准则，让它自己学习什么该说什么不该说。",
+      "usage": "Claude对齐训练、AI安全、减少有害输出、Anthropic"
+    },
+    {
+      "id": 34,
+      "title": "多智能体系统",
+      "en": "Multi-Agent System",
+      "definition": "多个AI Agent协作完成复杂任务的系统架构",
+      "plain": "AI团队作战。一个负责规划，一个负责写代码，一个负责测试，分工合作。",
+      "usage": "AutoGen、MetaGPT软件开发、复杂任务分解、团队模拟"
+    },
+    {
+      "id": 35,
+      "title": "思维树",
+      "en": "Tree of Thoughts",
+      "definition": "让AI在推理时探索多条路径并评估选择最优解的方法",
+      "plain": "AI不再一条路走到黑。想出多个方案，比较哪个更好，像下棋一样预判。",
+      "usage": "复杂推理、数学问题、游戏AI、决策优化"
+    },
+    {
+      "id": 36,
+      "title": "长上下文",
+      "en": "Long Context",
+      "definition": "大模型能处理的输入文本长度，从几千扩展到几十万甚至百万tokens",
+      "plain": "AI能读更长的书了。Claude能读20万token，相当于一本小说，不用分段。",
+      "usage": "Claude 200K上下文、Gemini 1M tokens、长文档分析、书籍理解"
+    },
+    {
+      "id": 37,
+      "title": "推理优化",
+      "en": "Inference Optimization",
+      "definition": "加速模型生成输出、降低延迟和成本的技术集合",
+      "plain": "让AI回答更快。不用重新算一遍，缓存中间结果，跳过不必要的计算。",
+      "usage": "KV Cache、投机解码、连续批处理、生产部署"
+    },
+    {
+      "id": 38,
+      "title": "参数高效微调",
+      "en": "PEFT (Parameter-Efficient Fine-Tuning)",
+      "definition": "只训练模型少量参数就能适配新任务的技术家族（LoRA、Adapter等）",
+      "plain": "大模型微调的微创手术。不改动大模型本体，加装小模块就能学新技能。",
+      "usage": "企业私有模型、个人定制AI、降低训练成本、LoRA/Adapter/P-Tuning"
+    },
+    {
+      "id": 39,
+      "title": "知识图谱",
+      "en": "Knowledge Graph",
+      "definition": "以实体-关系网络组织知识的结构化表示方法",
+      "plain": "AI的知识网络。'马斯克'-(创办)->'特斯拉'-(生产)->'Model 3'，机器能理解关系。",
+      "usage": "Google搜索、RAG增强、实体关系抽取、智能问答"
+    },
+    {
+      "id": 40,
+      "title": "情感分析",
+      "en": "Sentiment Analysis",
+      "definition": "自动识别文本中情感倾向（正面/负面/中性）的NLP技术",
+      "plain": "AI读心术。分析评论是夸还是骂，股市情绪监控，舆情分析。",
+      "usage": "社交媒体监控、客户反馈分析、股票情绪指标、品牌口碑"
+    },
+    {
+      "id": 41,
+      "title": "联邦学习",
+      "en": "Federated Learning",
+      "definition": "数据不出本地，只传输模型参数更新的分布式机器学习方式",
+      "plain": "数据不动模型动。各家医院数据不出门，模型到各家学习，汇总成更强的模型。",
+      "usage": "隐私保护AI、医疗AI、手机输入法学习、跨机构合作"
+    },
+    {
+      "id": 42,
+      "title": "AI安全",
+      "en": "AI Safety",
+      "definition": "确保AI系统可控、无害、符合人类价值观的研究领域",
+      "plain": "别让AI反噬人类。研究如何防止AI失控、被滥用、输出有害内容。",
+      "usage": "对齐研究、红队测试、AI监管、OpenAI安全团队"
+    },
+    {
+      "id": 43,
+      "title": "语音识别",
+      "en": "Speech Recognition (ASR)",
+      "definition": "将语音信号转换为文本的技术",
+      "plain": "AI听懂人话。你说的话变成文字，语音助手、字幕生成、会议记录。",
+      "usage": "Whisper、语音助手、实时字幕、语音输入法"
+    },
+    {
+      "id": 44,
+      "title": "图像识别",
+      "en": "Image Recognition",
+      "definition": "让AI识别图像内容、分类和检测物体的计算机视觉技术",
+      "plain": "AI能看图说话。识别猫狗、人脸识别、医疗影像诊断、自动驾驶看路。",
+      "usage": "人脸识别、医疗影像、自动驾驶、图像搜索"
+    },
+    {
+      "id": 45,
+      "title": "OCR光学字符识别",
+      "en": "Optical Character Recognition",
+      "definition": "将图片中的文字提取为可编辑文本的技术",
+      "plain": "图片上的字变电子版。拍照翻译、扫描文档转文字、车牌识别。",
+      "usage": "文档数字化、身份证识别、票据处理、翻译软件拍照翻译"
+    },
+    {
+      "id": 46,
+      "title": "视觉语言模型",
+      "en": "Vision Language Model (VLM)",
+      "definition": "能同时理解图像和文本的多模态大模型",
+      "plain": "AI能看图说话了。给它一张图，它能描述内容、回答问题、写文案。",
+      "usage": "GPT-4V、Claude 3、Gemini、图像理解、视觉问答"
+    },
+    {
+      "id": 47,
+      "title": "推理模型",
+      "en": "Reasoning Model",
+      "definition": "专门优化逻辑推理能力的大模型，如OpenAI o1系列",
+      "plain": "会思考的AI。不只是快速回答，而是像人一样逐步推理，数学编程更强。",
+      "usage": "OpenAI o1、复杂推理、数学竞赛、编程"
+    },
+    {
+      "id": 48,
+      "title": "测试时计算",
+      "en": "Test-Time Compute",
+      "definition": "在推理阶段增加计算量以提升输出质量的技术",
+      "plain": "让AI多想一会儿。不急着回答，多算几步，结果更准确。",
+      "usage": "推理模型、思维链优化、复杂问题求解"
+    },
+    {
+      "id": 49,
+      "title": "AI编程助手",
+      "en": "AI Coding Assistant",
+      "definition": "辅助程序员写代码、调试、重构的AI工具",
+      "plain": "AI帮你写代码。描述需求自动生成代码，还能找bug、优化性能。",
+      "usage": "GitHub Copilot、Cursor、Claude Code、编程效率提升"
+    },
+    {
+      "id": 50,
+      "title": "合成数据",
+      "en": "Synthetic Data",
+      "definition": "由AI生成的用于训练其他模型的数据",
+      "plain": "AI造的数据训练AI。真实数据不够用？让AI自己生成训练数据。",
+      "usage": "模型训练、数据增强、隐私保护、场景模拟"
+    },
+    {
+      "id": 51,
+      "title": "Cursor AI",
+      "en": "Cursor AI",
+      "definition": "基于AI的代码编辑器，集成了大语言模型实现智能代码补全、生成和重构",
+      "plain": "会写代码的IDE。敲一半代码它帮你补全，提需求直接生成代码，改bug还能解释。",
+      "usage": "代码开发、代码审查、bug修复、技术面试准备"
+    },
+    {
+      "id": 52,
+      "title": "Claude Code",
+      "en": "Claude Code",
+      "definition": "Anthropic推出的命令行AI编程工具，可在终端直接调用Claude进行代码开发和调试",
+      "plain": "终端里的AI程序员。不开IDE也能调教AI写代码、调试、跑命令。",
+      "usage": "后端开发、脚本编写、代码审查、DevOps任务"
+    },
+    {
+      "id": 53,
+      "title": "OpenAI o1/o3",
+      "en": "OpenAI o1/o3",
+      "definition": "OpenAI推出的推理模型系列，通过强化学习在推理时进行长思维链思考",
+      "plain": "慢思考的AI。不是秒回，而是想几分钟再答，数学编程能力碾压GPT-4。",
+      "usage": "复杂数学问题、算法竞赛、科学研究、代码生成"
+    },
+    {
+      "id": 54,
+      "title": "Gemini Ultra",
+      "en": "Gemini Ultra",
+      "definition": "Google DeepMind发布的旗舰多模态大模型，支持超长上下文和原生多模态",
+      "plain": "Google的AI王牌。能读整本书、处理视频、理解代码库，和GPT-4硬碰硬。",
+      "usage": "多模态理解、长文档处理、代码生成、Google生态集成"
+    },
+    {
+      "id": 55,
+      "title": "Llama开源生态",
+      "en": "Llama Open Source Ecosystem",
+      "definition": "Meta开源的大语言模型系列及其周边工具、量化版本、微调框架构成的生态",
+      "plain": "AI界的安卓。Meta开源模型，大家免费用，各种定制版本满天飞。",
+      "usage": "本地部署、微调训练、企业私有模型、开源社区"
+    },
+    {
+      "id": 56,
+      "title": "RAG中文优化",
+      "en": "RAG Optimization for Chinese",
+      "definition": "针对中文语义检索优化的RAG技术，包括中文分词、嵌入模型、召回策略",
+      "plain": "给中文AI配的检索优化。中文不像英文空格分词，优化后RAG找资料更准。",
+      "usage": "中文知识库、企业文档问答、中文搜索增强"
+    },
+    {
+      "id": 57,
+      "title": "长上下文窗口",
+      "en": "Long Context Window",
+      "definition": "模型一次能处理的最大token数量，决定了能理解的文本长度",
+      "plain": "AI的'工作记忆'。窗口越大，同时处理的信息越多，不用分段喂。",
+      "usage": "长文档分析、代码库理解、多轮对话上下文、书籍摘要"
+    },
+    {
+      "id": 58,
+      "title": "KV Cache",
+      "en": "Key-Value Cache",
+      "definition": "缓存注意力机制中计算过的Key-Value矩阵，避免重复计算加速推理",
+      "plain": "AI的'脑图缓存'。算过的注意力不再重复算，省大量时间。",
+      "usage": "推理加速、对话系统、流式输出、生产部署"
+    },
+    {
+      "id": 59,
+      "title": "投机解码",
+      "en": "Speculative Decoding",
+      "definition": "用小模型快速生成多个token，再让大模型验证的推理加速技术",
+      "plain": "AI先用小抄快速试答，大模型检查对不对，对了就跳过，错了就重算。",
+      "usage": "推理加速、降低延迟、大模型部署优化"
+    },
+    {
+      "id": 60,
+      "title": "Continuous Batching",
+      "en": "Continuous Batching",
+      "definition": "动态批处理技术，不等一批请求全部完成就加入新请求，提高GPU利用率",
+      "plain": "食堂翻台策略。不等一桌吃完就让人进来，GPU利用率从30%提到90%。",
+      "usage": "大模型服务部署、API服务、高并发场景"
+    },
+    {
+      "id": 61,
+      "title": "Flash Attention",
+      "en": "Flash Attention",
+      "definition": "通过IO-aware优化加速注意力计算，将显存占用从O(N²)降到O(N)的算法",
+      "plain": "注意力计算的省内存大招。原来要存整个矩阵，现在只存对角线，显存省一半。",
+      "usage": "长上下文训练、推理加速、大模型部署"
+    },
+    {
+      "id": 62,
+      "title": "Prefix Caching",
+      "en": "Prefix Caching",
+      "definition": "缓存多请求共享的前缀部分（如系统提示词），避免重复计算的优化技术",
+      "plain": "公共部分只算一次。系统提示词所有请求都一样，缓存起来省重复计算。",
+      "usage": "API服务、多轮对话、降低推理成本"
+    },
+    {
+      "id": 63,
+      "title": "MCP协议",
+      "en": "Model Context Protocol",
+      "definition": "Anthropic提出的标准协议，让AI模型标准化地调用外部工具和数据源",
+      "plain": "AI的USB接口。统一标准，AI能插各种工具，不用每个工具单独对接。",
+      "usage": "AI Agent工具调用、Claude工具生态、标准化集成"
+    },
+    {
+      "id": 64,
+      "title": "A2A协议",
+      "en": "Agent to Agent Protocol",
+      "definition": "让多个AI Agent之间能互相通信、协作的标准协议",
+      "plain": "AI之间的对讲机。两个AI Agent能互相发消息、分任务、协同工作了。",
+      "usage": "多Agent系统、企业自动化、工作流编排"
+    },
+    {
+      "id": 65,
+      "title": "OpenAI Assistants API",
+      "en": "OpenAI Assistants API",
+      "definition": "OpenAI提供的构建AI助手框架，支持文件检索、代码解释器、函数调用",
+      "plain": "OpenAI的AI助手SDK。帮你快速搭一个带知识库、能跑代码的AI应用。",
+      "usage": "AI应用开发、客服机器人、教育辅导、知识库问答"
+    },
+    {
+      "id": 66,
+      "title": "函数调用/工具调用",
+      "en": "Function Calling / Tool Use",
+      "definition": "让大模型能识别需要调用外部工具并生成标准化调用参数的能力",
+      "plain": "AI会使用工具了。不只是聊天，能查天气、搜资料、发邮件。",
+      "usage": "AI Agent、插件系统、实时数据查询、自动化工作流"
+    },
+    {
+      "id": 67,
+      "title": "LangChain",
+      "en": "LangChain",
+      "definition": "用于构建大模型应用的开发框架，提供链式调用、工具集成、Agent抽象",
+      "plain": "AI应用的脚手架。拼装各种组件、工具、数据库，快速搭AI应用。",
+      "usage": "RAG开发、AI Agent、聊天机器人、文档处理"
+    },
+    {
+      "id": 68,
+      "title": "LlamaIndex",
+      "en": "LlamaIndex",
+      "definition": "专注于知识检索增强的LLM框架，提供灵活的 数据连接和索引结构",
+      "plain": "知识库RAG专用框架。连接各种数据源，建索引、查向量，方便。",
+      "usage": "企业知识库、文档问答、个性化检索、RAG流水线"
+    },
+    {
+      "id": 69,
+      "title": "Semantic Kernel",
+      "en": "Semantic Kernel",
+      "definition": "微软推出的AI应用开发SDK，支持插件编排、记忆管理和多模型集成",
+      "plain": "微软的AI应用框架。给企业用的，集成Azure OpenAI，插件式开发。",
+      "usage": "企业AI应用、Microsoft生态集成、Copilot开发"
+    },
+    {
+      "id": 70,
+      "title": "CrewAI多智能体",
+      "en": "CrewAI Multi-Agent Framework",
+      "definition": "允许多个AI Agent扮演不同角色协作完成复杂任务的框架",
+      "plain": "AI团队剧本杀。给每个AI分配角色（老板、员工、专家），一起完成任务。",
+      "usage": "复杂任务分解、多Agent协作、企业自动化流程"
+    }
+  ]
+}
