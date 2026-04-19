@@ -33,12 +33,13 @@ def get_daily_items(category, count=2):
     state = load_json(STATE_FILE)
     cat_state = state[category]
     used = set(cat_state["used"])
-    available = [i for i in range(1, data["total"] + 1) if i not in used]
+    existing_ids = set(item["id"] for item in data["items"])
+    available = [i for i in range(1, data["total"] + 1) if i not in used and i in existing_ids]
     
     if len(available) < count:
         log(f"{category} 内容即将耗尽，重置轮换")
         used = set()
-        available = list(range(1, data["total"] + 1))
+        available = [i for i in range(1, data["total"] + 1) if i in existing_ids]
         cat_state["used"] = []
         cat_state["last_reset"] = datetime.now().strftime("%Y-%m-%d")
     

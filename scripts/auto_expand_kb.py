@@ -68,9 +68,18 @@ def append_items(category, items):
         data["next_id"] = data["total"] + 1
     save_json(path, data)
     state = load_json(STATE_FILE)
+    # 收集本次新增的条目ID，标记为已用（避免扩展后立即被发送）
+    if isinstance(items[0], dict):
+        new_ids = [item["id"] for item in items]
+    else:
+        new_ids = [entry[0] for entry in items]
+    existing_used = set(state[category]["used"])
+    for nid in new_ids:
+        if nid not in existing_used:
+            state[category]["used"].append(nid)
     state[category]["total"] = data["total"]
     save_json(STATE_FILE, state)
-    log(f"Appended {len(items)} items to {category}, new total: {data['total']}")
+    log(f"Appended {len(items)} items to {category}, new total: {data['total']}, marked {len(new_ids)} new IDs as used")
 
 
 FINANCE_EXPANSION = [
