@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """
 auto_expand_kb.py - 知识库自动扩展脚本
-触发条件：任一类别剩余条目 <= 6 时自动扩展
+触发条件：
+  1. 任一类别已用 >90% -> 归档已用内容，重置轮换
+  2. 任一类别剩余 <= 6 -> 自动扩展知识库
 """
 
 import json
@@ -9,11 +11,12 @@ import os
 import sys
 from datetime import datetime
 
-SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-REPO_DIR = os.path.dirname(SCRIPT_DIR)
-KB_DIR = os.path.join(REPO_DIR, "knowledge_base")
-STATE_FILE = os.path.join(KB_DIR, "state.json")
+KB_DIR = "/root/.openclaw/workspace/data/knowledge_base"
+STATE_FILE = f"{KB_DIR}/state.json"
+REVIEW_DIR = f"{KB_DIR}/review"
 THRESHOLD = 6
+ARCHIVE_THRESHOLD = 0.9  # 已用超过90%则归档
+EXPANSION_BATCH_SIZE = 20
 
 def log(msg):
     print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] [auto_expand] {msg}", flush=True)
@@ -37,10 +40,16 @@ def validate_json(path):
 def check_stock():
     state = load_json(STATE_FILE)
     needs = []
+    archive_cats = []
     for cat in ["finance", "ai"]:
-        rem = state[cat]["total"] - len(state[cat]["used"])
-        log(f"{cat}: {rem}/{state[cat]['total']} remaining")
-        if rem <= THRESHOLD:
+        total = state[cat]["total"]
+        used = len(state[cat]["used"])
+        rem = total - used
+        usage_ratio = used / total if total > 0 else 0
+        log(f"{cat}: {rem}/{total} remaining (used {used}, ratio {usage_ratio:.0%})")
+        if usage_ratio > ARCHIVE_THRESHOLD:
+            archive_cats.append(cat)
+        elif rem <= THRESHOLD:
             needs.append(cat)
     words_data = load_json(f"{KB_DIR}/words.json")
     enriched = [i for i, w in enumerate(words_data["items"]) if w.get("synonyms")]
@@ -50,22 +59,57 @@ def check_stock():
     log(f"words (enriched): {rem}/{len(enriched)} remaining")
     if rem <= THRESHOLD:
         needs.append("words")
-    return needs
+    return archive_cats, needs
+
+def archive_used(category):
+    """将已用内容归档到复习文件，重置已用列表"""
+    os.makedirs(REVIEW_DIR, exist_ok=True)
+    state = load_json(STATE_FILE)
+    data = load_json(f"{KB_DIR}/{category}.json")
+    
+    used_ids = set(state[category]["used"])
+    items_by_id = {item["id"]: item for item in data["items"]}
+    archived = [items_by_id[uid] for uid in sorted(used_ids) if uid in items_by_id]
+    
+    if not archived:
+        log(f"{category}: 无内容需要归档")
+        return 0
+    
+    today = datetime.now().strftime("%Y-%m-%d")
+    archive_file = f"{REVIEW_DIR}/{category}_{today}.json"
+    archive_data = {
+        "category": category,
+        "archived_date": today,
+        "count": len(archived),
+        "items": archived
+    }
+    with open(archive_file, 'w', encoding='utf-8') as f:
+        json.dump(archive_data, f, ensure_ascii=False, indent=2)
+    
+    # 重置已用
+    state[category]["used"] = []
+    state[category]["last_reset"] = today
+    save_json(STATE_FILE, state)
+    
+    log(f"{category}: 已归档 {len(archived)} 条到 {archive_file}")
+    return len(archived)
 
 def append_items(category, items):
     path = f"{KB_DIR}/{category}.json"
     data = load_json(path)
+    # 获取当前最大ID
+    current_max_id = max((item["id"] for item in data["items"]), default=0)
     if isinstance(items[0], dict):
         data["items"].extend(items)
         data["total"] = len(data["items"])
-        data["next_id"] = data["total"] + 1
     else:
         for entry in items:
-            item = {"id": entry[0], "title": entry[1], "en": entry[2],
+            # 使用递增ID而非固定ID，避免重复
+            current_max_id += 1
+            item = {"id": current_max_id, "title": entry[1], "en": entry[2],
                     "definition": entry[3], "plain": entry[4], "usage": entry[5]}
             data["items"].append(item)
         data["total"] = max(item["id"] for item in data["items"])
-        data["next_id"] = data["total"] + 1
     save_json(path, data)
     state = load_json(STATE_FILE)
     state[category]["total"] = data["total"]
@@ -74,50 +118,50 @@ def append_items(category, items):
 
 
 FINANCE_EXPANSION = [
-    (51,"不良资产","Non-Performing Assets","借款人无法按约定还本付息的资产，包括不良贷款、违约债券、困境房地产等","还不上的债。借钱的人跑路了或者彻底还不起，这笔债就变成了银行的坏账。","银行资产质量监控、AMC资产管理公司、困境投资、债转股"),
-    (52,"固收+","Fixed Income Plus","以固定收益资产为主，辅以少量权益或可转债等资产追求增强收益的策略","稳稳的幸福plus。债券打底保证不亏，再配点股票希望多赚点。","银行理财替代、稳健型基金、中低风险偏好投资者"),
-    (53,"雪球结构","Snowball Structure","一种障碍期权结构，只要标的价格不跌破敲入线，投资者获得票息收益","震荡行情的收割机。只要股价不暴跌，一直拿利息，暴跌了就亏大钱。","结构化理财、机构衍生品销售、高净值投资者"),
-    (54,"香草期权","Vanilla Option","最标准的期权合约，赋予持有者买入（看涨）或卖出（看跌）的权利而非义务","期权界的小白。买入看涨期权，股价涨了你赚，股价跌了最多亏权利金。","投机、对冲、保险型策略、权益类收益增强"),
-    (55,"可转债","Convertible Bond","可以在约定条件下转换为上市公司股票的债券，兼具债底保护和上涨弹性","进可攻退可守。债券价格有保底，股市行情好又能换成股票赚大钱。","A股特色品种、低风险偏好资金、条款博弈"),
-    (56,"同业存单","Negotiable Certificate of Deposit","存款类金融机构在全国银行间市场上发行的记账式定期存款凭证","银行之间互相借钱。中小银行通过发行同业存单向大银行借钱，利率比存款高。","银行流动性管理、货币基金配置、短期资金市场"),
-    (57,"梯度费率","Tiered Fee Structure","根据持有时长或资产规模递减收取管理费用的收费模式","持有越久交费越少。鼓励长期持有，减少频繁赎回对基金的冲击。","基金销售激励设计、机构投资者议价、持有期优惠"),
-    (58,"绝对收益","Absolute Return","追求正回报而非相对基准收益的投资目标，不关注跑赢或跑输市场","不管大盘涨跌，目标是赚钱。采用对冲、套利等策略与市场涨跌脱钩。","对冲基金、FOF母基金、机构资管部、养老金投资"),
-    (59,"相对收益","Relative Return","以跑赢基准指数为目标，收益来源是相对表现的业绩评价方式","赢了基准才算赚。指数涨10%你涨15%，这才叫超额收益。","公募基金主流评价标准、基金排名、主动管理型基金"),
-    (60,"最大回撤","Maximum Drawdown","投资组合从峰值到谷底的最大跌幅，衡量最坏情况的亏损","曾经最惨跌多少。从100万跌到70万，最大回撤就是30%。","风险控制指标、量化对冲基金、客户适当性管理"),
-    (61,"卡玛比率","Calmar Ratio","年化收益除以最大回撤，衡量每承受一单位亏损风险能获得多少收益","性价比最高的回撤指标。比夏普比率更能反映极端风险下的收益效率。","CTA基金评价、对冲基金筛选、风险调整收益"),
-    (62,"尾部风险","Tail Risk","资产收益率分布在极端负值区域的风险，即发生罕见大幅亏损的可能性","小概率大灾难。市场99%时间正常，但1%时间可能暴跌50%，这就是尾部风险。","风险管理、期权对冲、宏观对冲、风险预算"),
-    (63,"风险平价","Risk Parity","让各资产对组合总风险的贡献相同的配置方法，而非按金额平分","风险均等分配。100万股票和100万债券，股票波动大所以配少些，最终风险一样。","桥水全天候策略、组合优化、机构资产配置"),
-    (64,"全天候策略","All Weather Portfolio","Risk Parity基础上，增加通胀保护债券等资产，在所有经济环境中都能表现","经济好坏都能赢。经济增长持有股票，通胀上升持有大宗商品，啥环境都有应对。","桥水基金代表作、长期资产配置、养老金投资"),
-    (65,"耶鲁模式","Yale Model","耶鲁大学捐赠基金开创的重仓私募股权和绝对收益资产的配置模式","大学基金里的异类。不买国债股票，大钱投入私募股权和风投，长期业绩惊人。","捐赠基金配置、另类资产配置、长期投资机构"),
-    (66,"并购重组","M&A","企业间的合并（Merge）与收购（Acquire），或上市公司重大资产重组","买公司或卖公司。行业龙头收购竞争对手，或上市公司把资产整体卖掉换新业务。","投资银行业务、PE投资、产业升级、企业转型"),
-    (67,"杠杆收购","Leveraged Buyout (LBO)","以少量自有资金加大量债务融资收购目标公司的交易结构","借钱买公司。用被收购公司的资产和现金流作抵押借钱，买下整个公司。","KKR、黑石等PE经典策略、收购兼并、债务融资"),
-    (68,"私有化退市","Privatization/Delisting","上市公司大股东收购全部股份使其退出公开股票市场的行为","把上市公司买回家。不让散户买卖了，公司重新变回私人公司。","企业重组、PE退出、二次上市、战略转型"),
-    (69,"SPAC上市","SPAC IPO","Special Purpose Acquisition Company，通过空壳公司先上市再并购实体企业的上市方式","先上车后补票。成立一个空壳基金上市，再去找实体公司合并变相上市。","美股上市创新途径、李泽楷、Rothschild公司、空壳并购"),
-    (70,"市销率","Price-to-Sales Ratio","股票价格除以每股销售额的比率，适用于暂无盈利或盈利较少的公司估值","按收入算公司值不值。收入100亿的公司市值50亿，PS=0.5倍。","SaaS公司估值、电商平台、成长股早期估值、科创板公司"),
+    (None,"不良资产","Non-Performing Assets","借款人无法按约定还本付息的资产，包括不良贷款、违约债券、困境房地产等","还不上的债。借钱的人跑路了或者彻底还不起，这笔债就变成了银行的坏账。","银行资产质量监控、AMC资产管理公司、困境投资、债转股"),
+    (None,"固收+","Fixed Income Plus","以固定收益资产为主，辅以少量权益或可转债等资产追求增强收益的策略","稳稳的幸福plus。债券打底保证不亏，再配点股票希望多赚点。","银行理财替代、稳健型基金、中低风险偏好投资者"),
+    (None,"雪球结构","Snowball Structure","一种障碍期权结构，只要标的价格不跌破敲入线，投资者获得票息收益","震荡行情的收割机。只要股价不暴跌，一直拿利息，暴跌了就亏大钱。","结构化理财、机构衍生品销售、高净值投资者"),
+    (None,"香草期权","Vanilla Option","最标准的期权合约，赋予持有者买入（看涨）或卖出（看跌）的权利而非义务","期权界的小白。买入看涨期权，股价涨了你赚，股价跌了最多亏权利金。","投机、对冲、保险型策略、权益类收益增强"),
+    (None,"可转债","Convertible Bond","可以在约定条件下转换为上市公司股票的债券，兼具债底保护和上涨弹性","进可攻退可守。债券价格有保底，股市行情好又能换成股票赚大钱。","A股特色品种、低风险偏好资金、条款博弈"),
+    (None,"同业存单","Negotiable Certificate of Deposit","存款类金融机构在全国银行间市场上发行的记账式定期存款凭证","银行之间互相借钱。中小银行通过发行同业存单向大银行借钱，利率比存款高。","银行流动性管理、货币基金配置、短期资金市场"),
+    (None,"梯度费率","Tiered Fee Structure","根据持有时长或资产规模递减收取管理费用的收费模式","持有越久交费越少。鼓励长期持有，减少频繁赎回对基金的冲击。","基金销售激励设计、机构投资者议价、持有期优惠"),
+    (None,"绝对收益","Absolute Return","追求正回报而非相对基准收益的投资目标，不关注跑赢或跑输市场","不管大盘涨跌，目标是赚钱。采用对冲、套利等策略与市场涨跌脱钩。","对冲基金、FOF母基金、机构资管部、养老金投资"),
+    (None,"相对收益","Relative Return","以跑赢基准指数为目标，收益来源是相对表现的业绩评价方式","赢了基准才算赚。指数涨10%你涨15%，这才叫超额收益。","公募基金主流评价标准、基金排名、主动管理型基金"),
+    (None,"最大回撤","Maximum Drawdown","投资组合从峰值到谷底的最大跌幅，衡量最坏情况的亏损","曾经最惨跌多少。从100万跌到70万，最大回撤就是30%。","风险控制指标、量化对冲基金、客户适当性管理"),
+    (None,"卡玛比率","Calmar Ratio","年化收益除以最大回撤，衡量每承受一单位亏损风险能获得多少收益","性价比最高的回撤指标。比夏普比率更能反映极端风险下的收益效率。","CTA基金评价、对冲基金筛选、风险调整收益"),
+    (None,"尾部风险","Tail Risk","资产收益率分布在极端负值区域的风险，即发生罕见大幅亏损的可能性","小概率大灾难。市场99%时间正常，但1%时间可能暴跌50%，这就是尾部风险。","风险管理、期权对冲、宏观对冲、风险预算"),
+    (None,"风险平价","Risk Parity","让各资产对组合总风险的贡献相同的配置方法，而非按金额平分","风险均等分配。100万股票和100万债券，股票波动大所以配少些，最终风险一样。","桥水全天候策略、组合优化、机构资产配置"),
+    (None,"全天候策略","All Weather Portfolio","Risk Parity基础上，增加通胀保护债券等资产，在所有经济环境中都能表现","经济好坏都能赢。经济增长持有股票，通胀上升持有大宗商品，啥环境都有应对。","桥水基金代表作、长期资产配置、养老金投资"),
+    (None,"耶鲁模式","Yale Model","耶鲁大学捐赠基金开创的重仓私募股权和绝对收益资产的配置模式","大学基金里的异类。不买国债股票，大钱投入私募股权和风投，长期业绩惊人。","捐赠基金配置、另类资产配置、长期投资机构"),
+    (None,"并购重组","M&A","企业间的合并（Merge）与收购（Acquire），或上市公司重大资产重组","买公司或卖公司。行业龙头收购竞争对手，或上市公司把资产整体卖掉换新业务。","投资银行业务、PE投资、产业升级、企业转型"),
+    (None,"杠杆收购","Leveraged Buyout (LBO)","以少量自有资金加大量债务融资收购目标公司的交易结构","借钱买公司。用被收购公司的资产和现金流作抵押借钱，买下整个公司。","KKR、黑石等PE经典策略、收购兼并、债务融资"),
+    (None,"私有化退市","Privatization/Delisting","上市公司大股东收购全部股份使其退出公开股票市场的行为","把上市公司买回家。不让散户买卖了，公司重新变回私人公司。","企业重组、PE退出、二次上市、战略转型"),
+    (None,"SPAC上市","SPAC IPO","Special Purpose Acquisition Company，通过空壳公司先上市再并购实体企业的上市方式","先上车后补票。成立一个空壳基金上市，再去找实体公司合并变相上市。","美股上市创新途径、李泽楷、Rothschild公司、空壳并购"),
+    (None,"市销率","Price-to-Sales Ratio","股票价格除以每股销售额的比率，适用于暂无盈利或盈利较少的公司估值","按收入算公司值不值。收入100亿的公司市值50亿，PS=0.5倍。","SaaS公司估值、电商平台、成长股早期估值、科创板公司"),
 ]
 
 
 AI_EXPANSION = [
-    (51,"Cursor AI","Cursor","基于大模型的AI代码编辑器，内置多模型支持和代码补全、对话式编程功能","专门为程序员打造的AI IDE。写代码不用离开编辑器，AI直接帮你写、改、解释。","程序员日常开发、AI编程工具、代码补全、学生开发者"),
-    (52,"Claude Code","Claude Code","Anthropic推出的命令行AI编程工具，让Claude在终端直接执行代码任务","命令行里的程序员。描述你想做什么，Claude自己打开终端执行，git、部署都能干。","DevOps自动化、代码审查、脚本编写、开发者工作流"),
-    (53,"OpenAI o1/o3","OpenAI o1 & o3","OpenAI推出的推理模型系列，通过强化学习在推理阶段进行深度思考","会思考的AI。不是立刻给答案，而是一步步推理，适合数学证明和复杂逻辑。","数学研究、代码竞赛、科研推理、复杂问题求解"),
-    (54,"Gemini Ultra","Google Gemini Ultra","Google最强大的多模态大模型，支持文本、图像、音频、视频的统一理解","Google的终极AI。能处理的数据类型最全，PPT、代码、音频、视频一起理解。","Google生态集成、多模态应用、企业AI、Bard背后模型"),
-    (55,"Llama 开源生态","Llama Open Ecosystem","Meta开源的LLaMA系列大模型及其社区衍生态，包括微调版本和工具链","AI的Linux。开源模型谁都能用，全球开发者一起改进，衍生出几千个版本。","开源模型部署、企业私有化部署、模型微调、学术研究"),
-    (56,"RAG 中文优化","RAG for Chinese","针对中文语义和文档结构的检索增强生成优化技术","中文知识库必备。让AI更好地理解中文分段、标点和专业术语的检索匹配。","中文企业知识库、法律文档问答、医疗知识库"),
-    (57,"长上下文窗口","Long Context Window","大模型单次能处理的输入长度，GPT-4 128K、Claude 200K、Gemini 1M+","AI能一口气读一本小说了。不用分段喂，完整一本书丢进去直接理解。","长文档分析、书籍摘要、代码库理解、法律合同审查"),
-    (58,"KV Cache","Key-Value Cache","Transformer推理中缓存注意力键值对以避免重复计算的技术","记住之前的计算。已经算过的注意力不用再算，生成速度翻倍。","大模型推理优化、LLM serving、成本降低"),
-    (59,"投机解码","Speculative Decoding","用小模型快速生成多个token，再由大模型验证的推理加速技术","小模型打草稿大模型检查。小模型快速猜，大模型负责验证正确性，整体加速明显。","实时对话、推理延迟优化、流式输出"),
-    (60,"Continuous Batching","Continuous Batching","动态批处理技术，将不同请求的不同生成阶段放在同一批次处理","不浪费算力。别人的请求在生成，你的请求在预热，合并成一锅炖，GPU利用率拉满。","大模型服务部署、吞吐量优化、云端推理"),
-    (61,"Flash Attention","Flash Attention","一种内存高效注意力机制，通过IO感知设计大幅降低注意力计算显存占用","注意力计算的工程奇迹。不用占那么多显存，4090也能跑大模型了。","大模型训练与推理、长序列处理、显存优化"),
-    (62,"Prefix Caching","Prefix Caching","缓存对话前缀的KV值，多轮对话中复用已计算过的系统提示词","重复的话不用重复说。系统提示词算一遍，多轮对话直接复用，省token省时间。","AI助手多轮对话、企业知识库问答、客服机器人"),
-    (63,"MCP 协议","Model Context Protocol","Anthropic提出的让AI模型与外部数据源和工具进行标准化交互的协议","AI的USB接口。不管什么工具，插上MCP就能用，AI就能调用各种外部系统了。","AI Agent工具调用、Claude生态、插件系统"),
-    (64,"A2A 协议","Agent to Agent Protocol","让不同厂商、不同架构的AI Agent之间能互相通信协作的协议","AI之间的HTTP协议。让不同公司造的AI Agent能够互相打电话，协同工作。","多智能体系统、企业AI集成、异构Agent协作"),
-    (65,"OpenAI Assistants API","OpenAI Assistants API","OpenAI提供的用于构建AI助手的API，支持文件检索、代码解释器、函数调用","官方帮你搭AI助手。不用自己实现检索和工具调用，OpenAI给你包圆了。","构建AI客服、垂直领域助手、文档问答"),
-    (66,"函数调用/工具调用","Function Calling / Tool Use","让大模型能够调用外部API、数据库查询、代码执行等外部工具的能力","AI学会使用工具。不只是聊天，能真帮用户执行操作：发邮件、查天气、下订单。","AI Agent、插件生态、自动化办公、实时数据"),
-    (67,"LangChain","LangChain","用于构建大模型应用的开发框架，提供链式调用、工具集成、内存管理等","AI应用的脚手架。拼装提示词、连接数据库、调用工具，一套框架全搞定。","AI应用开发、RAG系统、聊天机器人、企业AI"),
-    (68,"LlamaIndex","LlamaIndex","专门用于构建检索增强生成系统的数据框架，重点在数据连接和索引","RAG专用框架。把PDF、网页、数据库接进来，建索引，让AI能查到最新内容。","企业知识库、文档问答、数据密集型应用"),
-    (69,"Semantic Kernel","Semantic Kernel","微软推出的企业级AI应用开发框架，支持Planner和原生工具集成","微软给企业做的LangChain。接入了微软全家桶，Office、Azure都能无缝对接。","企业AI应用、微软生态集成、Copilot开发"),
-    (70,"CrewAI 多智能体","CrewAI","开源多智能体编排框架，多个AI Agent扮演不同角色分工协作完成任务","AI团队协作。一个Agent当老板分配任务，一个当研究员查资料，一个当写手出报告。","复杂任务分解、多Agent协作、内容生产、工作流自动化"),
+    (None,"Cursor AI","Cursor","基于大模型的AI代码编辑器，内置多模型支持和代码补全、对话式编程功能","专门为程序员打造的AI IDE。写代码不用离开编辑器，AI直接帮你写、改、解释。","程序员日常开发、AI编程工具、代码补全、学生开发者"),
+    (None,"Claude Code","Claude Code","Anthropic推出的命令行AI编程工具，让Claude在终端直接执行代码任务","命令行里的程序员。描述你想做什么，Claude自己打开终端执行，git、部署都能干。","DevOps自动化、代码审查、脚本编写、开发者工作流"),
+    (None,"OpenAI o1/o3","OpenAI o1 & o3","OpenAI推出的推理模型系列，通过强化学习在推理阶段进行深度思考","会思考的AI。不是立刻给答案，而是一步步推理，适合数学证明和复杂逻辑。","数学研究、代码竞赛、科研推理、复杂问题求解"),
+    (None,"Gemini Ultra","Google Gemini Ultra","Google最强大的多模态大模型，支持文本、图像、音频、视频的统一理解","Google的终极AI。能处理的数据类型最全，PPT、代码、音频、视频一起理解。","Google生态集成、多模态应用、企业AI、Bard背后模型"),
+    (None,"Llama 开源生态","Llama Open Ecosystem","Meta开源的LLaMA系列大模型及其社区衍生态，包括微调版本和工具链","AI的Linux。开源模型谁都能用，全球开发者一起改进，衍生出几千个版本。","开源模型部署、企业私有化部署、模型微调、学术研究"),
+    (None,"RAG 中文优化","RAG for Chinese","针对中文语义和文档结构的检索增强生成优化技术","中文知识库必备。让AI更好地理解中文分段、标点和专业术语的检索匹配。","中文企业知识库、法律文档问答、医疗知识库"),
+    (None,"长上下文窗口","Long Context Window","大模型单次能处理的输入长度，GPT-4 128K、Claude 200K、Gemini 1M+","AI能一口气读一本小说了。不用分段喂，完整一本书丢进去直接理解。","长文档分析、书籍摘要、代码库理解、法律合同审查"),
+    (None,"KV Cache","Key-Value Cache","Transformer推理中缓存注意力键值对以避免重复计算的技术","记住之前的计算。已经算过的注意力不用再算，生成速度翻倍。","大模型推理优化、LLM serving、成本降低"),
+    (None,"投机解码","Speculative Decoding","用小模型快速生成多个token，再由大模型验证的推理加速技术","小模型打草稿大模型检查。小模型快速猜，大模型负责验证正确性，整体加速明显。","实时对话、推理延迟优化、流式输出"),
+    (None,"Continuous Batching","Continuous Batching","动态批处理技术，将不同请求的不同生成阶段放在同一批次处理","不浪费算力。别人的请求在生成，你的请求在预热，合并成一锅炖，GPU利用率拉满。","大模型服务部署、吞吐量优化、云端推理"),
+    (None,"Flash Attention","Flash Attention","一种内存高效注意力机制，通过IO感知设计大幅降低注意力计算显存占用","注意力计算的工程奇迹。不用占那么多显存，4090也能跑大模型了。","大模型训练与推理、长序列处理、显存优化"),
+    (None,"Prefix Caching","Prefix Caching","缓存对话前缀的KV值，多轮对话中复用已计算过的系统提示词","重复的话不用重复说。系统提示词算一遍，多轮对话直接复用，省token省时间。","AI助手多轮对话、企业知识库问答、客服机器人"),
+    (None,"MCP 协议","Model Context Protocol","Anthropic提出的让AI模型与外部数据源和工具进行标准化交互的协议","AI的USB接口。不管什么工具，插上MCP就能用，AI就能调用各种外部系统了。","AI Agent工具调用、Claude生态、插件系统"),
+    (None,"A2A 协议","Agent to Agent Protocol","让不同厂商、不同架构的AI Agent之间能互相通信协作的协议","AI之间的HTTP协议。让不同公司造的AI Agent能够互相打电话，协同工作。","多智能体系统、企业AI集成、异构Agent协作"),
+    (None,"OpenAI Assistants API","OpenAI Assistants API","OpenAI提供的用于构建AI助手的API，支持文件检索、代码解释器、函数调用","官方帮你搭AI助手。不用自己实现检索和工具调用，OpenAI给你包圆了。","构建AI客服、垂直领域助手、文档问答"),
+    (None,"函数调用/工具调用","Function Calling / Tool Use","让大模型能够调用外部API、数据库查询、代码执行等外部工具的能力","AI学会使用工具。不只是聊天，能真帮用户执行操作：发邮件、查天气、下订单。","AI Agent、插件生态、自动化办公、实时数据"),
+    (None,"LangChain","LangChain","用于构建大模型应用的开发框架，提供链式调用、工具集成、内存管理等","AI应用的脚手架。拼装提示词、连接数据库、调用工具，一套框架全搞定。","AI应用开发、RAG系统、聊天机器人、企业AI"),
+    (None,"LlamaIndex","LlamaIndex","专门用于构建检索增强生成系统的数据框架，重点在数据连接和索引","RAG专用框架。把PDF、网页、数据库接进来，建索引，让AI能查到最新内容。","企业知识库、文档问答、数据密集型应用"),
+    (None,"Semantic Kernel","Semantic Kernel","微软推出的企业级AI应用开发框架，支持Planner和原生工具集成","微软给企业做的LangChain。接入了微软全家桶，Office、Azure都能无缝对接。","企业AI应用、微软生态集成、Copilot开发"),
+    (None,"CrewAI 多智能体","CrewAI","开源多智能体编排框架，多个AI Agent扮演不同角色分工协作完成任务","AI团队协作。一个Agent当老板分配任务，一个当研究员查资料，一个当写手出报告。","复杂任务分解、多Agent协作、内容生产、工作流自动化"),
 ]
 
 
@@ -156,14 +200,23 @@ WORD_EXPANSION = [
 
 
 def main():
-    needs = check_stock()
-    if not needs:
-        log("所有知识库库存充足，无需扩展")
+    archive_cats, expand_cats = check_stock()
+    
+    # 先处理归档
+    for cat in archive_cats:
+        archive_used(cat)
+    
+    # 再处理扩展
+    if not expand_cats:
+        if archive_cats:
+            log("归档完成，知识库已重置")
+        else:
+            log("所有知识库库存充足，无需扩展")
         return
 
-    log(f"检测到以下类别需要扩展: {needs}")
+    log(f"检测到以下类别需要扩展: {expand_cats}")
 
-    for cat in needs:
+    for cat in expand_cats:
         if cat == "finance":
             append_items("finance", FINANCE_EXPANSION)
         elif cat == "ai":

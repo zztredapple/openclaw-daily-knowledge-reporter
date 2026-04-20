@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "total": 70,
+  "total": 90,
   "items": [
     {
       "id": 1,
@@ -405,162 +405,323 @@
     {
       "id": 51,
       "title": "Cursor AI",
-      "en": "Cursor AI",
-      "definition": "基于AI的代码编辑器，集成了大语言模型实现智能代码补全、生成和重构",
-      "plain": "会写代码的IDE。敲一半代码它帮你补全，提需求直接生成代码，改bug还能解释。",
-      "usage": "代码开发、代码审查、bug修复、技术面试准备"
+      "en": "Cursor",
+      "definition": "基于大模型的AI代码编辑器，内置多模型支持和代码补全、对话式编程功能",
+      "plain": "专门为程序员打造的AI IDE。写代码不用离开编辑器，AI直接帮你写、改、解释。",
+      "usage": "程序员日常开发、AI编程工具、代码补全、学生开发者"
     },
     {
       "id": 52,
       "title": "Claude Code",
       "en": "Claude Code",
-      "definition": "Anthropic推出的命令行AI编程工具，可在终端直接调用Claude进行代码开发和调试",
-      "plain": "终端里的AI程序员。不开IDE也能调教AI写代码、调试、跑命令。",
-      "usage": "后端开发、脚本编写、代码审查、DevOps任务"
+      "definition": "Anthropic推出的命令行AI编程工具，让Claude在终端直接执行代码任务",
+      "plain": "命令行里的程序员。描述你想做什么，Claude自己打开终端执行，git、部署都能干。",
+      "usage": "DevOps自动化、代码审查、脚本编写、开发者工作流"
     },
     {
       "id": 53,
       "title": "OpenAI o1/o3",
-      "en": "OpenAI o1/o3",
-      "definition": "OpenAI推出的推理模型系列，通过强化学习在推理时进行长思维链思考",
-      "plain": "慢思考的AI。不是秒回，而是想几分钟再答，数学编程能力碾压GPT-4。",
-      "usage": "复杂数学问题、算法竞赛、科学研究、代码生成"
+      "en": "OpenAI o1 & o3",
+      "definition": "OpenAI推出的推理模型系列，通过强化学习在推理阶段进行深度思考",
+      "plain": "会思考的AI。不是立刻给答案，而是一步步推理，适合数学证明和复杂逻辑。",
+      "usage": "数学研究、代码竞赛、科研推理、复杂问题求解"
     },
     {
       "id": 54,
       "title": "Gemini Ultra",
-      "en": "Gemini Ultra",
-      "definition": "Google DeepMind发布的旗舰多模态大模型，支持超长上下文和原生多模态",
-      "plain": "Google的AI王牌。能读整本书、处理视频、理解代码库，和GPT-4硬碰硬。",
-      "usage": "多模态理解、长文档处理、代码生成、Google生态集成"
+      "en": "Google Gemini Ultra",
+      "definition": "Google最强大的多模态大模型，支持文本、图像、音频、视频的统一理解",
+      "plain": "Google的终极AI。能处理的数据类型最全，PPT、代码、音频、视频一起理解。",
+      "usage": "Google生态集成、多模态应用、企业AI、Bard背后模型"
     },
     {
       "id": 55,
-      "title": "Llama开源生态",
-      "en": "Llama Open Source Ecosystem",
-      "definition": "Meta开源的大语言模型系列及其周边工具、量化版本、微调框架构成的生态",
-      "plain": "AI界的安卓。Meta开源模型，大家免费用，各种定制版本满天飞。",
-      "usage": "本地部署、微调训练、企业私有模型、开源社区"
+      "title": "Llama 开源生态",
+      "en": "Llama Open Ecosystem",
+      "definition": "Meta开源的LLaMA系列大模型及其社区衍生态，包括微调版本和工具链",
+      "plain": "AI的Linux。开源模型谁都能用，全球开发者一起改进，衍生出几千个版本。",
+      "usage": "开源模型部署、企业私有化部署、模型微调、学术研究"
     },
     {
       "id": 56,
-      "title": "RAG中文优化",
-      "en": "RAG Optimization for Chinese",
-      "definition": "针对中文语义检索优化的RAG技术，包括中文分词、嵌入模型、召回策略",
-      "plain": "给中文AI配的检索优化。中文不像英文空格分词，优化后RAG找资料更准。",
-      "usage": "中文知识库、企业文档问答、中文搜索增强"
+      "title": "RAG 中文优化",
+      "en": "RAG for Chinese",
+      "definition": "针对中文语义和文档结构的检索增强生成优化技术",
+      "plain": "中文知识库必备。让AI更好地理解中文分段、标点和专业术语的检索匹配。",
+      "usage": "中文企业知识库、法律文档问答、医疗知识库"
     },
     {
       "id": 57,
       "title": "长上下文窗口",
       "en": "Long Context Window",
-      "definition": "模型一次能处理的最大token数量，决定了能理解的文本长度",
-      "plain": "AI的'工作记忆'。窗口越大，同时处理的信息越多，不用分段喂。",
-      "usage": "长文档分析、代码库理解、多轮对话上下文、书籍摘要"
+      "definition": "大模型单次能处理的输入长度，GPT-4 128K、Claude 200K、Gemini 1M+",
+      "plain": "AI能一口气读一本小说了。不用分段喂，完整一本书丢进去直接理解。",
+      "usage": "长文档分析、书籍摘要、代码库理解、法律合同审查"
     },
     {
       "id": 58,
       "title": "KV Cache",
       "en": "Key-Value Cache",
-      "definition": "缓存注意力机制中计算过的Key-Value矩阵，避免重复计算加速推理",
-      "plain": "AI的'脑图缓存'。算过的注意力不再重复算，省大量时间。",
-      "usage": "推理加速、对话系统、流式输出、生产部署"
+      "definition": "Transformer推理中缓存注意力键值对以避免重复计算的技术",
+      "plain": "记住之前的计算。已经算过的注意力不用再算，生成速度翻倍。",
+      "usage": "大模型推理优化、LLM serving、成本降低"
     },
     {
       "id": 59,
       "title": "投机解码",
       "en": "Speculative Decoding",
-      "definition": "用小模型快速生成多个token，再让大模型验证的推理加速技术",
-      "plain": "AI先用小抄快速试答，大模型检查对不对，对了就跳过，错了就重算。",
-      "usage": "推理加速、降低延迟、大模型部署优化"
+      "definition": "用小模型快速生成多个token，再由大模型验证的推理加速技术",
+      "plain": "小模型打草稿大模型检查。小模型快速猜，大模型负责验证正确性，整体加速明显。",
+      "usage": "实时对话、推理延迟优化、流式输出"
     },
     {
       "id": 60,
       "title": "Continuous Batching",
       "en": "Continuous Batching",
-      "definition": "动态批处理技术，不等一批请求全部完成就加入新请求，提高GPU利用率",
-      "plain": "食堂翻台策略。不等一桌吃完就让人进来，GPU利用率从30%提到90%。",
-      "usage": "大模型服务部署、API服务、高并发场景"
+      "definition": "动态批处理技术，将不同请求的不同生成阶段放在同一批次处理",
+      "plain": "不浪费算力。别人的请求在生成，你的请求在预热，合并成一锅炖，GPU利用率拉满。",
+      "usage": "大模型服务部署、吞吐量优化、云端推理"
     },
     {
       "id": 61,
       "title": "Flash Attention",
       "en": "Flash Attention",
-      "definition": "通过IO-aware优化加速注意力计算，将显存占用从O(N²)降到O(N)的算法",
-      "plain": "注意力计算的省内存大招。原来要存整个矩阵，现在只存对角线，显存省一半。",
-      "usage": "长上下文训练、推理加速、大模型部署"
+      "definition": "一种内存高效注意力机制，通过IO感知设计大幅降低注意力计算显存占用",
+      "plain": "注意力计算的工程奇迹。不用占那么多显存，4090也能跑大模型了。",
+      "usage": "大模型训练与推理、长序列处理、显存优化"
     },
     {
       "id": 62,
       "title": "Prefix Caching",
       "en": "Prefix Caching",
-      "definition": "缓存多请求共享的前缀部分（如系统提示词），避免重复计算的优化技术",
-      "plain": "公共部分只算一次。系统提示词所有请求都一样，缓存起来省重复计算。",
-      "usage": "API服务、多轮对话、降低推理成本"
+      "definition": "缓存对话前缀的KV值，多轮对话中复用已计算过的系统提示词",
+      "plain": "重复的话不用重复说。系统提示词算一遍，多轮对话直接复用，省token省时间。",
+      "usage": "AI助手多轮对话、企业知识库问答、客服机器人"
     },
     {
       "id": 63,
-      "title": "MCP协议",
+      "title": "MCP 协议",
       "en": "Model Context Protocol",
-      "definition": "Anthropic提出的标准协议，让AI模型标准化地调用外部工具和数据源",
-      "plain": "AI的USB接口。统一标准，AI能插各种工具，不用每个工具单独对接。",
-      "usage": "AI Agent工具调用、Claude工具生态、标准化集成"
+      "definition": "Anthropic提出的让AI模型与外部数据源和工具进行标准化交互的协议",
+      "plain": "AI的USB接口。不管什么工具，插上MCP就能用，AI就能调用各种外部系统了。",
+      "usage": "AI Agent工具调用、Claude生态、插件系统"
     },
     {
       "id": 64,
-      "title": "A2A协议",
+      "title": "A2A 协议",
       "en": "Agent to Agent Protocol",
-      "definition": "让多个AI Agent之间能互相通信、协作的标准协议",
-      "plain": "AI之间的对讲机。两个AI Agent能互相发消息、分任务、协同工作了。",
-      "usage": "多Agent系统、企业自动化、工作流编排"
+      "definition": "让不同厂商、不同架构的AI Agent之间能互相通信协作的协议",
+      "plain": "AI之间的HTTP协议。让不同公司造的AI Agent能够互相打电话，协同工作。",
+      "usage": "多智能体系统、企业AI集成、异构Agent协作"
     },
     {
       "id": 65,
       "title": "OpenAI Assistants API",
       "en": "OpenAI Assistants API",
-      "definition": "OpenAI提供的构建AI助手框架，支持文件检索、代码解释器、函数调用",
-      "plain": "OpenAI的AI助手SDK。帮你快速搭一个带知识库、能跑代码的AI应用。",
-      "usage": "AI应用开发、客服机器人、教育辅导、知识库问答"
+      "definition": "OpenAI提供的用于构建AI助手的API，支持文件检索、代码解释器、函数调用",
+      "plain": "官方帮你搭AI助手。不用自己实现检索和工具调用，OpenAI给你包圆了。",
+      "usage": "构建AI客服、垂直领域助手、文档问答"
     },
     {
       "id": 66,
       "title": "函数调用/工具调用",
       "en": "Function Calling / Tool Use",
-      "definition": "让大模型能识别需要调用外部工具并生成标准化调用参数的能力",
-      "plain": "AI会使用工具了。不只是聊天，能查天气、搜资料、发邮件。",
-      "usage": "AI Agent、插件系统、实时数据查询、自动化工作流"
+      "definition": "让大模型能够调用外部API、数据库查询、代码执行等外部工具的能力",
+      "plain": "AI学会使用工具。不只是聊天，能真帮用户执行操作：发邮件、查天气、下订单。",
+      "usage": "AI Agent、插件生态、自动化办公、实时数据"
     },
     {
       "id": 67,
       "title": "LangChain",
       "en": "LangChain",
-      "definition": "用于构建大模型应用的开发框架，提供链式调用、工具集成、Agent抽象",
-      "plain": "AI应用的脚手架。拼装各种组件、工具、数据库，快速搭AI应用。",
-      "usage": "RAG开发、AI Agent、聊天机器人、文档处理"
+      "definition": "用于构建大模型应用的开发框架，提供链式调用、工具集成、内存管理等",
+      "plain": "AI应用的脚手架。拼装提示词、连接数据库、调用工具，一套框架全搞定。",
+      "usage": "AI应用开发、RAG系统、聊天机器人、企业AI"
     },
     {
       "id": 68,
       "title": "LlamaIndex",
       "en": "LlamaIndex",
-      "definition": "专注于知识检索增强的LLM框架，提供灵活的 数据连接和索引结构",
-      "plain": "知识库RAG专用框架。连接各种数据源，建索引、查向量，方便。",
-      "usage": "企业知识库、文档问答、个性化检索、RAG流水线"
+      "definition": "专门用于构建检索增强生成系统的数据框架，重点在数据连接和索引",
+      "plain": "RAG专用框架。把PDF、网页、数据库接进来，建索引，让AI能查到最新内容。",
+      "usage": "企业知识库、文档问答、数据密集型应用"
     },
     {
       "id": 69,
       "title": "Semantic Kernel",
       "en": "Semantic Kernel",
-      "definition": "微软推出的AI应用开发SDK，支持插件编排、记忆管理和多模型集成",
-      "plain": "微软的AI应用框架。给企业用的，集成Azure OpenAI，插件式开发。",
-      "usage": "企业AI应用、Microsoft生态集成、Copilot开发"
+      "definition": "微软推出的企业级AI应用开发框架，支持Planner和原生工具集成",
+      "plain": "微软给企业做的LangChain。接入了微软全家桶，Office、Azure都能无缝对接。",
+      "usage": "企业AI应用、微软生态集成、Copilot开发"
     },
     {
       "id": 70,
-      "title": "CrewAI多智能体",
-      "en": "CrewAI Multi-Agent Framework",
-      "definition": "允许多个AI Agent扮演不同角色协作完成复杂任务的框架",
-      "plain": "AI团队剧本杀。给每个AI分配角色（老板、员工、专家），一起完成任务。",
-      "usage": "复杂任务分解、多Agent协作、企业自动化流程"
+      "title": "CrewAI 多智能体",
+      "en": "CrewAI",
+      "definition": "开源多智能体编排框架，多个AI Agent扮演不同角色分工协作完成任务",
+      "plain": "AI团队协作。一个Agent当老板分配任务，一个当研究员查资料，一个当写手出报告。",
+      "usage": "复杂任务分解、多Agent协作、内容生产、工作流自动化"
+    },
+    {
+      "id": 71,
+      "title": "OpenAI o3-mini",
+      "en": "OpenAI o3-mini",
+      "definition": "OpenAI推出的轻量级推理模型，专为低成本推理场景优化",
+      "plain": "便宜好用的推理模型。保留了o3的推理能力，但成本大幅降低，适合部署。",
+      "usage": "低成本推理、API调用、教育场景、代码生成"
+    },
+    {
+      "id": 72,
+      "title": "Gemini 2.0 Flash",
+      "en": "Google Gemini 2.0 Flash",
+      "definition": "Google推出的高速、低成本多模态模型，支持100万token上下文",
+      "plain": "又快又便宜的多模态王者。上下文100万token，价格是GPT-4o的十分之一。",
+      "usage": "长上下文、多模态应用、Agent开发、Google生态"
+    },
+    {
+      "id": 73,
+      "title": "DeepSeek R1",
+      "en": "DeepSeek R1",
+      "definition": "中国DeepSeek公司开源的推理大模型，性能对标OpenAI o1",
+      "plain": "国产推理之光。开源可商用，数学代码推理能力跟o1差不多，价格便宜得多。",
+      "usage": "开源推理模型、中国AI、代码能力、数学推理"
+    },
+    {
+      "id": 74,
+      "title": "Mistral Large 2",
+      "en": "Mistral Large 2",
+      "definition": "法国Mistral AI推出的大语言模型，支持32K上下文",
+      "plain": "欧洲AI的骄傲。Mistral Large 2性能强大，开源和商业授权都支持。",
+      "usage": "欧洲AI、开源模型、多语言支持、企业应用"
+    },
+    {
+      "id": 75,
+      "title": "Grok 3",
+      "en": "xAI Grok 3",
+      "definition": "马斯克xAI推出的对话助手，集成实时信息搜索能力",
+      "plain": "马斯克的AI。实时联网搜信息，说话比ChatGPT直接，少了很多废话。",
+      "usage": "实时搜索、社交媒体集成、马斯克生态"
+    },
+    {
+      "id": 76,
+      "title": "Anthropic Claude 3.7",
+      "en": "Claude 3.7",
+      "definition": "Anthropic推出的长思考模型，200K上下文，支持工具调用",
+      "plain": "最会写代码的AI。Claude 3.7 Sonnet升级版，代码能力大幅提升。",
+      "usage": "代码生成、长上下文、工具调用、企业应用"
+    },
+    {
+      "id": 77,
+      "title": "AI Agent Memory",
+      "en": "AI Agent Memory",
+      "definition": "让AI Agent跨会话记忆上下文、偏好和长期信息的机制",
+      "plain": "AI的记性。不同对话能记住你是谁、喜欢什么、之前聊过什么。",
+      "usage": "Agent记忆、个性化、多轮对话、长期学习"
+    },
+    {
+      "id": 78,
+      "title": "Multi-Agent Orchestration",
+      "en": "Multi-Agent Orchestration",
+      "definition": "协调多个AI Agent分工协作完成复杂任务的框架",
+      "plain": "AI团队领导。一个Agent分配任务、另一个执行、第三个审核，流水线作业。",
+      "usage": "工作流自动化、多Agent协作、任务分解、企业流程"
+    },
+    {
+      "id": 79,
+      "title": "AI主权",
+      "en": "AI Sovereignty",
+      "definition": "国家层面掌控AI技术、数据和基础设施的战略布局",
+      "plain": "我的AI我做主。数据不出境、模型自己训、算力自己建，国家安全第一。",
+      "usage": "数据本地化、AI监管、国家战略、技术自主"
+    },
+    {
+      "id": 80,
+      "title": "AI治理",
+      "en": "AI Governance",
+      "definition": "规范AI开发、部署和应用的政策法规和伦理框架",
+      "plain": "给AI定规矩。什么能做什么不能做，欧盟AI Act、中国生成式AI管理办法都算。",
+      "usage": "AI法规、伦理合规、算法监管、风险分级"
+    },
+    {
+      "id": 81,
+      "title": "大模型幻觉",
+      "en": "LLM Hallucination",
+      "definition": "大模型生成看似合理但实际错误或虚构内容的问题",
+      "plain": "AI一本正经地胡说八道。引用不存在的论文、编造不存在的事实，还特别自信。",
+      "usage": "RAG检索增强、对抗训练、事实核查、不确定性量化"
+    },
+    {
+      "id": 82,
+      "title": "提示词注入",
+      "en": "Prompt Injection",
+      "definition": "通过恶意输入操纵AI执行非预期指令的攻击手法",
+      "plain": "对AI的注入攻击。在输入里藏指令，让AI绕过安全限制执行操作。",
+      "usage": "AI安全、红队测试、输入过滤、安全边界"
+    },
+    {
+      "id": 83,
+      "title": "模型蒸馏",
+      "en": "Model Distillation",
+      "definition": "将大模型知识迁移到小模型的技术",
+      "plain": "大模型教小模型。大模型学到的本事，蒸馏到小模型里，省算力。",
+      "usage": "模型压缩、边缘部署、算力优化、知识迁移"
+    },
+    {
+      "id": 84,
+      "title": "思维链推理",
+      "en": "Chain-of-Thought",
+      "definition": "让AI展示推理步骤再给出答案的提示技术",
+      "plain": "让AI慢思熟虑。不直接给答案，而是把思考过程一步步写出来。",
+      "usage": "推理能力、调试模型、复杂问题、数学应用"
+    },
+    {
+      "id": 85,
+      "title": "检索增强生成",
+      "en": "RAG",
+      "definition": "通过检索外部知识库增强大模型生成能力的技术",
+      "plain": "AI的参考资料。实时从数据库、文档里检索信息，结合生成答案。",
+      "usage": "知识库问答、企业文档、实时信息、减少幻觉"
+    },
+    {
+      "id": 86,
+      "title": "向量数据库",
+      "en": "Vector Database",
+      "definition": "存储和检索高维向量Embedding的数据库",
+      "plain": "AI的图书馆。存AI能理解的数据格式，最近邻检索，找相似内容。",
+      "usage": "语义搜索、相似度匹配、Embedding存储、RAG应用"
+    },
+    {
+      "id": 87,
+      "title": "Embedding嵌入",
+      "en": "Embedding",
+      "definition": "将文本、图像等数据映射为高维向量的表示技术",
+      "plain": "把东西变成AI能懂的数字。文字变成一串数字，这串数字代表它的含义。",
+      "usage": "向量表示、语义理解、相似度计算、推荐系统"
+    },
+    {
+      "id": 88,
+      "title": "Function Calling 2.0",
+      "en": "Function Calling 2.0",
+      "definition": "大模型调用外部工具和API的标准化接口升级版",
+      "plain": "AI使用工具升级。不只是调用函数，还能理解参数、并行执行、错误处理。",
+      "usage": "工具调用、API集成、Agent能力、自动化办公"
+    },
+    {
+      "id": 89,
+      "title": "上下文窗口扩展",
+      "en": "Context Window Extension",
+      "definition": "不断增大的模型单次输入处理长度",
+      "plain": "AI能读的书越来越厚。Gemini 1M、Claude 200K、GPT-4 128K，书慢慢能读完。",
+      "usage": "长文档处理、代码库理解、全文检索、法律合同"
+    },
+    {
+      "id": 90,
+      "title": "小样本学习",
+      "en": "Few-Shot Learning",
+      "definition": "仅用少量示例让AI学会新任务的提示技术",
+      "plain": "AI的举一反三。不用训练，给几个例子就知道你想干什么。",
+      "usage": "小样本泛化、提示工程、迁移学习、快速适配"
     }
-  ]
+  ],
+  "next_id": 71
 }
