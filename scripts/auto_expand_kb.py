@@ -55,9 +55,12 @@ def check_stock():
     enriched = [i for i, w in enumerate(words_data["items"]) if w.get("synonyms")]
     used_ids = [i for i in state["words"]["used"]
                 if i < len(words_data["items"]) and words_data["items"][i].get("synonyms")]
-    rem = len(enriched) - len(used_ids)
-    log(f"words (enriched): {rem}/{len(enriched)} remaining")
-    if rem <= THRESHOLD:
+    words_rem = len(enriched) - len(used_ids)
+    words_usage = len(used_ids) / len(enriched) if len(enriched) > 0 else 0
+    log(f"words (enriched): {words_rem}/{len(enriched)} remaining (used {len(used_ids)}, ratio {words_usage:.0%})")
+    if words_usage > ARCHIVE_THRESHOLD:
+        archive_cats.append("words")
+    elif words_rem <= THRESHOLD:
         needs.append("words")
     return archive_cats, needs
 
@@ -67,9 +70,15 @@ def archive_used(category):
     state = load_json(STATE_FILE)
     data = load_json(f"{KB_DIR}/{category}.json")
     
-    used_ids = set(state[category]["used"])
-    items_by_id = {item["id"]: item for item in data["items"]}
-    archived = [items_by_id[uid] for uid in sorted(used_ids) if uid in items_by_id]
+    if category == "words":
+        # words 用数组索引跟踪
+        enriched = [i for i, w in enumerate(data["items"]) if w.get("synonyms")]
+        used_set = set(state["words"]["used"])
+        archived = [data["items"][i] for i in sorted(used_set) if i < len(data["items"])]
+    else:
+        used_ids = set(state[category]["used"])
+        items_by_id = {item["id"]: item for item in data["items"]}
+        archived = [items_by_id[uid] for uid in sorted(used_ids) if uid in items_by_id]
     
     if not archived:
         log(f"{category}: 无内容需要归档")
@@ -112,7 +121,11 @@ def append_items(category, items):
         data["total"] = max(item["id"] for item in data["items"])
     save_json(path, data)
     state = load_json(STATE_FILE)
-    state[category]["total"] = data["total"]
+    if category == "words":
+        enriched = [i for i, w in enumerate(data["items"]) if w.get("synonyms")]
+        state[category]["total"] = len(enriched)
+    else:
+        state[category]["total"] = data["total"]
     save_json(STATE_FILE, state)
     log(f"Appended {len(items)} items to {category}, new total: {data['total']}")
 
